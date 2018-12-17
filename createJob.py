@@ -9,13 +9,29 @@ def main():
     config.load_kube_config()
     v1 = client.BatchV1Api()
     namespace = 'default' # str | object name and auth scope, such as for teams and projects
+    containers = kubernetes.client.V1Container(
+            name='c',
+            image='index.docker.io/srini92/chipper-worker:latest'
+            )
+    podSpec = kubernetes.client.V1PodSpec(
+            containers=[containers],
+            restart_policy='OnFailure'
+            )
+    jobTemplate = kubernetes.client.V1PodTemplateSpec(
+            spec=podSpec
+            )
+    jobSpec = kubernetes.client.V1JobSpec(
+            parallelism=2,
+            template=jobTemplate
+            )
     metadata = kubernetes.client.V1ObjectMeta(
             name='test-api-kubernetes'
             )
     body = kubernetes.client.V1Job(
             api_version='batch/v1',
             kind='Job',
-            metadata=metadata
+            metadata=metadata,
+            spec=jobSpec
             ) # V1Job |
     print(body)
     include_uninitialized = True # bool | If true, partially initialized resources are included in the response. (optional)
