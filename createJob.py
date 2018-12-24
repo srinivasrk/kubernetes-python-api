@@ -11,7 +11,10 @@ def main():
     namespace = 'default' # str | object name and auth scope, such as for teams and projects
     containers = kubernetes.client.V1Container(
             name='c',
-            image='index.docker.io/srini92/chipper-worker:latest'
+            image='index.docker.io/srini92/chipper-worker:latest',
+            env=[
+                ('RABBITMQ_SERVER', '159.203.167.38')
+            ]
             )
     podSpec = kubernetes.client.V1PodSpec(
             containers=[containers],
