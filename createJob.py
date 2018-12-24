@@ -9,12 +9,11 @@ def main():
     config.load_kube_config()
     v1 = client.BatchV1Api()
     namespace = 'default' # str | object name and auth scope, such as for teams and projects
+    envdata = kubernetes.client.V1EnvVar('RABBITMQ_SERVER', '159.203.167.38')
     containers = kubernetes.client.V1Container(
             name='c',
-            image='index.docker.io/srini92/chipper-worker:latest',
-            env=[
-                ('RABBITMQ_SERVER', '159.203.167.38')
-            ]
+            image='index.docker.io/srini92/cw:latest',
+            env=[envdata]
             )
     podSpec = kubernetes.client.V1PodSpec(
             containers=[containers],
