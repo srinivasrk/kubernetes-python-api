@@ -20,8 +20,7 @@ def main():
     jobTemplate = kubernetes.client.V1PodTemplateSpec(
             spec=podSpec
             )
-    jobSpec = kubernetes.client.V1JobSpec(
-            parallelism=2,
+    jobSpec = kubernetes.client.V1JobSpec(  # if both parallelism and completions is unset it is defaulted to 1
             template=jobTemplate
             )
     metadata = kubernetes.client.V1ObjectMeta(
@@ -32,10 +31,10 @@ def main():
             kind='Job',
             metadata=metadata,
             spec=jobSpec
-            ) # V1Job |
+            )  # V1Job
     print(body)
     include_uninitialized = True # bool | If true, partially initialized resources are included in the response. (optional)
-    pretty = 'pretty_example' # str | If 'true', then the output is pretty printed. (optional)
+    pretty = 'true' # str | If 'true', then the output is pretty printed. (optional)
     try:
         api_response = v1.create_namespaced_job(namespace, body, include_uninitialized=include_uninitialized, pretty=pretty)
         pprint(api_response)
