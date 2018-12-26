@@ -4,12 +4,13 @@ from kubernetes import client, config
 import kubernetes.client
 from kubernetes.client.rest import ApiException
 from pprint import pprint
+import os
 
 def main():
     config.load_kube_config()
     v1 = client.BatchV1Api()
     namespace = 'default' # str | object name and auth scope, such as for teams and projects
-    envdata = kubernetes.client.V1EnvVar('RABBITMQ_SERVER', '159.203.167.38')
+    envdata = kubernetes.client.V1EnvVar('RABBITMQ_SERVER', os.environ['RABBITMQ_SERVER'])
     containers = kubernetes.client.V1Container(
             name='c',
             image='index.docker.io/srini92/cw:latest',
